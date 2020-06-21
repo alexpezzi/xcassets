@@ -9,16 +9,23 @@ module XCAssets
     end
 
     def iconset(name, **options, &block)
-      @iconset = ::XCAssets::Iconset.new(name, **options)
-      @assets.add(@iconset) if @assets
+      @set = ::XCAssets::Iconset.new(name, **options)
+      @assets.add(@set) if @assets
       instance_eval(&block)
-      @iconset
+      @set
+    end
+
+    def imageset(name, **options, &block)
+      @set = ::XCAssets::Imageset.new(name, **options)
+      @assets.add(@set) if @assets
+      instance_eval(&block)
+      @set
     end
 
     def image(source, **options)
       source, options[:filename] = source.first if source.is_a?(Hash)
       image = ::XCAssets::Image.new(source, **options)
-      @iconset.add(image)
+      @set.add(image)
       image
     end
 

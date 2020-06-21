@@ -1,11 +1,12 @@
 require 'json'
 
 module XCAssets
-  class Iconset
-    attr_reader :name, :author, :version, :images
+  class Imageset
+    attr_reader :name, :properties, :author, :version, :images
 
-    def initialize(name, author: 'xcassets', version: 1)
+    def initialize(name, properties: {}, author: 'xcassets', version: 1)
       @name = name
+      @properties = properties
       @images = []
       @author = author
       @version = version
@@ -16,9 +17,9 @@ module XCAssets
     end
 
     def contents
-      @images.each_with_object(info: info, images: []) do |image, hash|
+      @images.each_with_object(info: info, images: []) { |image, hash|
         hash[:images] << image.contents
-      end
+      }.compact.delete_if { |k, v| v.empty? }
     end
 
     def add(image)
@@ -26,7 +27,7 @@ module XCAssets
     end
 
     def save(parent_path)
-      path = File.join(parent_path, "#{name}.iconset")
+      path = File.join(parent_path, "#{name}.imageset")
       Dir.mkdir(path)
       @images.each do |image|
         image.save(path)

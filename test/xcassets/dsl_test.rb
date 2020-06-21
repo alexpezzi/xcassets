@@ -5,9 +5,20 @@ class DSLTest < Minitest::Test
 
   def test_scinario
     assets = xcassets 'Assets' do
-      iconset 'LaunchImage' do
-        image fixture('40x40.png') => 'Default.png'
-        image fixture('40x40.png')
+      imageset 'app-logo', properties: { "template-rendering-intent": "template" } do
+        image fixture('app_logo.pdf')
+      end
+      imageset 'splashScreenFullscreenImage' do
+        image fixture('splashScreenFullscreenImage.pdf')
+      end
+      imageset 'splashScreenLogo' do
+        image fixture('splashScreenLogo-iPhone.pdf'), idiom: "iphone"
+        image fixture('splashScreenLogo-iPad.pdf'), idiom: "ipad"
+      end
+      imageset 'splashScreenLogo2' do
+        image fixture('splashScreenLogo-iPhone@2x.png'), idiom: "iphone", scale: 2
+        image fixture('splashScreenLogo-iPhone@3x.png'), idiom: "iphone", scale: 3
+        image fixture('splashScreenLogo-iPad@2x.png'), idiom: "ipad", scale: 2
       end
     end
     assets.save(Dir.pwd)

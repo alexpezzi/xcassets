@@ -1,4 +1,5 @@
 require 'xcassets/xcassets'
 require 'xcassets/iconset'
+require 'xcassets/imageset'
 require 'xcassets/image'
 require 'xcassets/version'

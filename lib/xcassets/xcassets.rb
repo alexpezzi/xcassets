@@ -8,7 +8,7 @@ module XCAssets
       @name = name
       @author = author
       @version = version
-      @iconsets = []
+      @sets = []
     end
 
     def info
@@ -19,19 +19,19 @@ module XCAssets
       { info: info }
     end
 
-    def add(iconset)
-      @iconsets << iconset
+    def add(set)
+      @sets << set
     end
 
     def save(parent_path)
       path = File.join(parent_path, "#{name}.xcassets")
       Dir.mkdir(path)
-      @iconsets.each do |iconset|
-        iconset.save(path)
+      @sets.each do |set|
+        set.save(path)
       end
       json_path = File.join(path, 'Contents.json')
       File.open(json_path, 'w') do |file|
-        JSON.dump(contents, file)
+        file << JSON.pretty_generate(contents)
       end
     end
   end

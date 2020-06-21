@@ -11,9 +11,16 @@ module XCAssets
       end
       @source = source
       @filename = filename || File.basename(source)
-      @size = size || FastImage.size(source).join('x')
       @idiom = (idiom || guess_idiom).to_sym
-      @scale = (scale || guess_scale).to_i
+
+      if @filename.downcase.end_with?("pdf")
+        @size = size
+        @scale = "#{scale}x" if scale
+      else
+        @size = size || FastImage.size(source).join('x')
+        @scale = "#{(scale || guess_scale).to_i}x"
+      end
+      
     end
 
     def contents
@@ -21,12 +28,12 @@ module XCAssets
         filename: @filename,
         size: @size,
         idiom: @idiom.to_s,
-        scale: "#{@scale}x"
-      }
+        scale: @scale
+      }.compact
     end
 
     def save(parent_path)
-      new_path = File.join(parent_path, filename)
+      new_path = File.join(parent_path, @filename)
       FileUtils.copy(@source, new_path)
     end
 
