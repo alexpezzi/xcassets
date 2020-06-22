@@ -22,11 +22,24 @@ module XCAssets
       @set
     end
 
+    def colorset(name, **options, &block)
+      @set = ::XCAssets::Colorset.new(name, **options)
+      @assets.add(@set) if @assets
+      instance_eval(&block)
+      @set
+    end
+
     def image(source, **options)
       source, options[:filename] = source.first if source.is_a?(Hash)
       image = ::XCAssets::Image.new(source, **options)
       @set.add(image)
       image
+    end
+
+    def color(hexcolor, **options)
+      color = ::XCAssets::Color.new(hexcolor, **options)
+      @set.add(color)
+      color
     end
 
     def images(*filenames)

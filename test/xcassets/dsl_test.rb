@@ -20,6 +20,12 @@ class DSLTest < Minitest::Test
         image fixture('splashScreenLogo-iPhone@3x.png'), idiom: "iphone", scale: 3
         image fixture('splashScreenLogo-iPad@2x.png'), idiom: "ipad", scale: 2
       end
+      colorset 'backgroundColor' do
+        color '#FF0000FF', idiom: "iphone"
+        color '#00FF00FF', idiom: "ipad"
+        color '#0000FFFF', idiom: "tv"
+        color '#88888888', idiom: "mac"
+      end
     end
     assets.save(Dir.pwd)
   end
