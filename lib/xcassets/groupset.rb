@@ -1,11 +1,12 @@
 require 'json'
 
 module XCAssets
-  class XCAssets
+  class Groupset
     attr_reader :name, :author, :version, :sets
 
     def initialize(name, author: 'xcassets', version: 1)
       @name = name
+      @colors = []
       @author = author
       @version = version
       @sets = []
@@ -24,7 +25,7 @@ module XCAssets
     end
 
     def save(parent_path)
-      path = File.join(parent_path, "#{name}.xcassets")
+      path = File.join(parent_path, name)
       Dir.mkdir(path)
       @sets.each do |set|
         set.save(path)

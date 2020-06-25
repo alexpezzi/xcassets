@@ -3,6 +3,7 @@ require 'xcassets'
 module XCAssets
   module DSL
     def xcassets(name, **options, &block)
+      @assets_stack = []
       @assets = ::XCAssets::XCAssets.new(name, **options)
       instance_eval(&block)
       @assets
@@ -26,6 +27,16 @@ module XCAssets
       @set = ::XCAssets::Colorset.new(name, **options)
       @assets.add(@set) if @assets
       instance_eval(&block)
+      @set
+    end
+
+    def groupset(name, **options, &block)
+      @set = ::XCAssets::Groupset.new(name, **options)
+      @assets.add(@set) if @assets
+      @assets_stack << @assets
+      @assets = @set
+      instance_eval(&block)
+      @assets = @assets_stack.pop()
       @set
     end
 
